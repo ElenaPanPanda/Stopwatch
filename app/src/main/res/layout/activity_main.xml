@@ -11,7 +11,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/time"
+        android:text="@string/startTime"
         android:textAlignment="center"
         android:textSize="64sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,6 +19,7 @@
         app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <Button
         android:id="@+id/startButton"
