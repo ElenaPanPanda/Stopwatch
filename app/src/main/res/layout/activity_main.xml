@@ -16,17 +16,18 @@
         android:textSize="64sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <Button
         android:id="@+id/startButton"
-        style="@style/Widget.AppCompat.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="2dp"
         android:layout_marginTop="46dp"
+        app:backgroundTint="@null"
+        android:background="@drawable/start_button_shape"
+        android:foreground="?selectableItemBackground"
         android:text="@string/start"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@id/resetButton"
@@ -35,10 +36,13 @@
 
     <Button
         android:id="@+id/resetButton"
-        style="@style/Widget.AppCompat.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="2dp"
         android:layout_marginTop="46dp"
+        app:backgroundTint="@null"
+        android:background="@drawable/end_button_shape"
+        android:foreground="?selectableItemBackground"
         android:text="@string/reset"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
