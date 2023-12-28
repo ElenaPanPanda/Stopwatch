@@ -14,7 +14,7 @@
         android:indeterminateDrawable="@drawable/progress_bar_shape"
         android:indeterminateOnly="true"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@id/textView"
+        app:layout_constraintBottom_toTopOf="@id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,7 +23,6 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/startTime"
         android:textAlignment="center"
         android:textSize="64sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -68,11 +67,20 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/start_to_end_button"
         android:foreground="?selectableItemBackground"
-        android:text="@string/settings"
+        android:text="@string/set_time_limit_button"
         android:textSize="24sp"
         app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/startButton" />
+
+    <TextView
+        android:id="@+id/tv_time_limit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/settingsButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

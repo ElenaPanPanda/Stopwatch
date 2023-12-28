@@ -9,9 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import com.example.stopwatch.databinding.ActivityMainBinding
 import java.util.Date
 import kotlin.concurrent.thread
@@ -35,24 +37,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         if (savedInstanceState != null) {
             binding.textView.text = savedInstanceState.getString("timerCount")
         }
 
-
         binding.settingsButton.setOnClickListener {
-            val contentView =
-                LayoutInflater.from(this).inflate(R.layout.alert_dialog_settings, null, false)
+            showAlertDialog()
 
-            AlertDialog.Builder(this)
-                .setTitle(R.string.set_upper_limit)
-                .setView(contentView)
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    val editText = contentView.findViewById<EditText>(R.id.upperLimitEditText)
-                    upperLimitSeconds = editText.text.toString()
-                }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
+
         }
 
     }
@@ -71,9 +64,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        stopTimer()
+    private fun showAlertDialog() {
+        val contentView =
+            LayoutInflater.from(this).inflate(R.layout.alert_dialog_settings, null, false)
+
+        val alertDialogBuilder = AlertDialog.Builder(this)
+            .setTitle(R.string.set_upper_limit)
+            .setView(contentView)
+            .setPositiveButton(R.string.ok, null)
+            .setNegativeButton(R.string.cancel, null)
+            .show()
+
+        val positiveButton = alertDialogBuilder.getButton(AlertDialog.BUTTON_POSITIVE)
+        positiveButton.setOnClickListener {
+            val editText = contentView.findViewById<EditText>(R.id.upperLimitEditText)
+
+            if (editText.text.toString().isDouble()) {
+                val text = "Time can't be double"
+                Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+                editText.error = text
+            } else {
+                upperLimitSeconds = editText.text.toString()
+                binding.tvTimeLimit.text = getString(R.string.upper_limit, formatSeconds(upperLimitSeconds))
+                alertDialogBuilder.dismiss()
+            }
+        }
     }
 
     private fun startTimer() {
@@ -103,6 +118,8 @@ class MainActivity : AppCompatActivity() {
             binding.textView.text = formatMilliseconds(currentTime)
             currentTime += TIME_UPDATE
 
+            Log.d("notifiCATionn", currentTime.toString())
+
             binding.progressBar.visibility = View.VISIBLE
 
             val nextColor = colorsList[colorIndex]
@@ -110,8 +127,8 @@ class MainActivity : AppCompatActivity() {
             colorIndex = colorsList.getNextIndex(colorIndex)
 
             if (upperLimitSeconds != "") {
-                if (currentTime > upperLimitSeconds.toInt() * TIME_UPDATE + TIME_UPDATE) {
-                    binding.textView.setTextColor(Color.RED)
+                if (currentTime == upperLimitSeconds.toInt() * TIME_UPDATE + TIME_UPDATE) {
+                    Notification.show(this)
                 }
             }
 
@@ -125,9 +142,16 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("SimpleDateFormat")
     private fun formatMilliseconds(milliseconds: Long): String {
-        //val millis = milliseconds % 1000
         val format = SimpleDateFormat("mm:ss")
         return format.format(Date(milliseconds))
-        //+ ":$millis".padEnd(3, '0').take(3)
     }
+
+    private fun formatSeconds(sec: String): String {
+        return "${(sec.toInt() / 60).toString().padStart(2, '0')}" +
+                ":" +
+                "${(sec.toInt() % 60).toString().padStart(2, '0')}"
+
+    }
+
+    private fun String.isDouble(): Boolean = this.contains(',') || this.contains('.')
 }
